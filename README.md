@@ -1,6 +1,6 @@
-<h3 align="center">基于Ant Design Pro改造业务系统 </h3>
+<h2 align="center">基于Ant Design Pro改造业务系统 </h2>
 
-## 系统特性
+### 系统特性
 
 - 基于 `Ant Design` 体系精心设计
 - 使用 `React/umi/dva/antd` 等前端前沿技术开发
@@ -8,7 +8,7 @@
 - 可配置的主题满足多样化的品牌诉求
 - `Mock` 数据实用的本地数据调试方案
 
-## 启动
+### 启动
 
 ```shell
 git clone https://github.com/poetries/ant-pro-for-business.git
@@ -20,7 +20,7 @@ npm install
 npm start
 ```
 
-## 前置知识
+### 前置知识
 
 > 为更好使用ant pro系统，您需要了解`dva`、`umi`、`ant-design`
 
