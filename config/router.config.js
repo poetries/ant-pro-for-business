@@ -29,6 +29,11 @@ export default [
             component: './Dashboard/Analysis',
           },
           {
+            path: '/poetry',
+            name: 'poetry',
+            component: './poetry',
+          },
+          {
             path: '/dashboard/monitor',
             name: 'monitor',
             component: './Dashboard/Monitor',
