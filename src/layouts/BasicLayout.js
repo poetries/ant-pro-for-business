@@ -159,13 +159,13 @@ class BasicLayout extends React.PureComponent {
       }
     });
     if (!currRouterData) {
-      return 'Ant Design Pro';
+      return 'poetry';
     }
     const message = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     });
-    return `${message} - Ant Design Pro`;
+    return `${message} - poetry`;
   };
 
   getLayoutStyle = () => {
@@ -267,9 +267,7 @@ class BasicLayout extends React.PureComponent {
             )}
           </ContainerQuery>
         </DocumentTitle>
-        {rendering && process.env.NODE_ENV === 'production' ? null : ( // Do show SettingDrawer in production
-          <SettingDrawer />
-        )}
+      
       </React.Fragment>
     );
   }

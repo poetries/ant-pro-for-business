@@ -8,15 +8,15 @@ const FooterView = () => (
     <GlobalFooter
       links={[
         {
-          key: 'Pro 首页',
-          title: 'Pro 首页',
-          href: 'https://pro.ant.design',
+          key: 'poetry',
+          title: 'poetry blog',
+          href: 'http://blog.poetries.top',
           blankTarget: true,
         },
         {
           key: 'github',
           title: <Icon type="github" />,
-          href: 'https://github.com/ant-design/ant-design-pro',
+          href: 'https://github.com/poetries/ant-pro-for-business',
           blankTarget: true,
         },
         {
@@ -28,7 +28,7 @@ const FooterView = () => (
       ]}
       copyright={
         <Fragment>
-          Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+          Copyright <Icon type="copyright" /> 2018 基于ant-design pro改造
         </Fragment>
       }
     />

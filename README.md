@@ -44,6 +44,34 @@ npm install
 npm start
 ```
 
+### 新建页面
+
+**step1 新增 js、less 文件**
+
+> 在`src/pages`下新建`NewPage.js`，及 `NewPage.less` 文件，如果相关页面有多个，可以新建一个文件夹来放置相关文件
+
+**step2 将文件加入菜单和路由**
+
+> 加入菜单和路由的方式请参照 路由和菜单 - 添加路由/菜单 中的介绍完成。加好后，访问 http://localhost:8000/new 就可以看到新增的页面了
+
+> 在`config/router.config.js`中配置路由和菜单
+
+```javascript
+{
+    path: '/new',
+    icon: 'dashboard',//菜单图标
+    name: 'new',// 菜单文本
+    component: './NewPage', 
+}
+```
+
+> 然后在`src/locales.zh-CN`中配置菜单文本信息
+
+**step3 新增 model、service**
+
+> 布局及路由都配置好之后，回到之前新建的 `NewPage.js`，可以开始写业务代码了,如果需要用到` dva `中的数据流，还需要在 `src/models ` `src/services` 中建立相应的 `model `和 `service`，[具体可以参考 ](https://github.com/ant-design/ant-design-pro/blob/master/src/pages/Dashboard/models/activities.js)
+
+
 ### 前置知识
 
 > 为更好使用ant pro系统，您需要了解`dva`、`umi`、`ant-design`

@@ -59,7 +59,7 @@ export default class GlobalHeaderRight extends PureComponent {
     } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        <Menu.Item key="userCenter">
+        {/**<Menu.Item key="userCenter">
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
         </Menu.Item>
@@ -71,7 +71,7 @@ export default class GlobalHeaderRight extends PureComponent {
           <Icon type="close-circle" />
           <FormattedMessage id="menu.account.trigger" defaultMessage="Trigger Error" />
         </Menu.Item>
-        <Menu.Divider />
+    <Menu.Divider />**/}
         <Menu.Item key="logout">
           <Icon type="logout" />
           退出登录
@@ -85,7 +85,7 @@ export default class GlobalHeaderRight extends PureComponent {
     }
     return (
       <div className={className}>
-        <HeaderSearch
+        {/**   <HeaderSearch
           className={`${styles.action} ${styles.search}`}
           placeholder="站内搜索"
           dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
@@ -96,7 +96,7 @@ export default class GlobalHeaderRight extends PureComponent {
             console.log('enter', value); // eslint-disable-line
           }}
         />
-        <Tooltip title="使用文档">
+      <Tooltip title="使用文档">
           <a
             target="_blank"
             href="https://pro.ant.design/docs/getting-started"
@@ -136,7 +136,7 @@ export default class GlobalHeaderRight extends PureComponent {
             emptyText="你已完成所有待办"
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
           />
-        </NoticeIcon>
+        </NoticeIcon>**/}
         {currentUser.name ? (
           <Dropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
@@ -152,7 +152,7 @@ export default class GlobalHeaderRight extends PureComponent {
         ) : (
           <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
         )}
-        <Button
+       {/** <Button
           size="small"
           ghost={theme === 'dark'}
           style={{
@@ -163,7 +163,7 @@ export default class GlobalHeaderRight extends PureComponent {
           }}
         >
           <FormattedMessage id="navbar.lang" />
-        </Button>
+        </Button>**/}
       </div>
     );
   }
