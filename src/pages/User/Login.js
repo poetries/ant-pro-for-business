@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import Link from 'umi/link';
-import { Checkbox, Alert, Icon } from 'antd';
+import { Checkbox, Alert, Icon ,Input} from 'antd';
 import Login from '@/components/Login';
 import styles from './Login.less';
+
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
@@ -40,14 +41,13 @@ class LoginPage extends Component {
     });
 
   handleSubmit = (err, values) => {
-    const { type } = this.state;
     if (!err) {
       const { dispatch } = this.props;
+     console.log(values)
       dispatch({
         type: 'login/login',
         payload: {
-          ...values,
-          type,
+          ...values
         },
       });
     }
@@ -64,56 +64,41 @@ class LoginPage extends Component {
   );
 
   render() {
-    const { login, submitting } = this.props;
+    const { login, submitting,dispatch } = this.props;
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
-        <Login
-          defaultActiveKey={type}
-          onTabChange={this.onTabChange}
-          onSubmit={this.handleSubmit}
-          ref={form => {
-            this.loginForm = form;
-          }}
-        >
-          <Tab key="account" tab="账户密码登录">
-            {login.status === 'error' &&
+          <Login
+            defaultActiveKey={type}
+            onTabChange={this.onTabChange}
+            onSubmit={this.handleSubmit}
+            ref={form => {
+              this.loginForm = form;
+            }}
+          >
+          {login.status === 'error' &&
               login.type === 'account' &&
               !submitting &&
-              this.renderMessage('账户或密码错误（admin/888888）')}
-            <UserName name="userName" placeholder="admin/user" />
-            <Password
-              name="password"
-              placeholder="888888/123456"
-              onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
-            />
-          </Tab>
-          <Tab key="mobile" tab="手机号登录">
-            {login.status === 'error' &&
-              login.type === 'mobile' &&
-              !submitting &&
-              this.renderMessage('验证码错误')}
-            <Mobile name="mobile" />
-            <Captcha name="captcha" countDown={120} onGetCaptcha={this.onGetCaptcha} />
-          </Tab>
-          <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
-              自动登录
-            </Checkbox>
-            <a style={{ float: 'right' }} href="">
-              忘记密码
-            </a>
-          </div>
+               this.renderMessage('账户或密码错误（admin/888888）')
+          }
+        
+          <UserName name="email" placeholder="邮箱" />
+
+          <Password
+            name="password"
+            placeholder="密码"
+            onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
+          />
+
+          <Captcha 
+            name="captcha" 
+            placeholder="验证码" 
+            captchaUrl="http://api.o.yesdat.com/v1/logins/captcha?v=5b9686c45c2e87.14077500"
+            onGetCaptcha={() => dispatch({type:'login/getCaptcha'})}
+          />
+
           <Submit loading={submitting}>登录</Submit>
-          {/**<div className={styles.other}>
-            其他登录方式
-            <Icon className={styles.icon} type="alipay-circle" />
-            <Icon className={styles.icon} type="taobao-circle" />
-            <Icon className={styles.icon} type="weibo-circle" />
-            <Link className={styles.register} to="/User/Register">
-              注册账户
-            </Link>
-        </div>**/}
+
         </Login>
       </div>
     );

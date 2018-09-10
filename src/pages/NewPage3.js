@@ -25,20 +25,16 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 /* eslint react/no-multi-comp:0 */
 export default
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
+@connect(({setting}) => ({
+  setting
 }))
-class newPage1 extends PureComponent {
+class newPage3 extends PureComponent {
   state = {
 
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'rule/fetch',
-    });
   }
 
   render() {

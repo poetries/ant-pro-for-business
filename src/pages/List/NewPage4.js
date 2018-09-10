@@ -20,16 +20,16 @@ import {
   Divider,
   Steps,
   Radio,
+  List
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 /* eslint react/no-multi-comp:0 */
 export default
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
+@connect(({poetry}) => ({
+  poetries:poetry.poetries
 }))
-class newPage1 extends PureComponent {
+class newPage4 extends PureComponent {
   state = {
 
   };
@@ -37,14 +37,20 @@ class newPage1 extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/fetch',
+      type: 'ListNewPage/fetchPoetry',
     });
   }
 
   render() {
+    const {poetries} = this.props
     return (
       <PageHeaderWrapper title="">
-        new page 4
+           <List
+              size="large"
+              bordered
+              dataSource={poetries}
+              renderItem={item => (<List.Item>{item.poetry_title}-{item.poetry_body}-{item.author}</List.Item>)}
+        />
       </PageHeaderWrapper>
     );
   }

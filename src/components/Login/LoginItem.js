@@ -82,6 +82,7 @@ class WarpFormItem extends Component {
       customprops,
       defaultValue,
       rules,
+      captchaUrl,
       name,
       buttonText,
       updateActive,
@@ -91,7 +92,7 @@ class WarpFormItem extends Component {
 
     // get getFieldDecorator props
     const options = this.getFormItemOptions(this.props);
-
+    
     const otherProps = restProps || {};
     if (type === 'Captcha') {
       const inputProps = omit(otherProps, ['onGetCaptcha']);
@@ -103,12 +104,15 @@ class WarpFormItem extends Component {
             </Col>
             <Col span={8}>
               <Button
-                disabled={count}
                 className={styles.getCaptcha}
+                style={{padding:0,border:'none'}}
                 size="large"
                 onClick={this.onGetCaptcha}
               >
-                {count ? `${count} s` : buttonText}
+                <img 
+                  style={{width:117,height:38}} 
+                  src={captchaUrl} 
+                /> 
               </Button>
             </Col>
           </Row>

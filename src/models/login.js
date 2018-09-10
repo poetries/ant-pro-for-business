@@ -1,20 +1,27 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
+import { appLogin, loadCode,loadCodeUrl,appDomain } from '@/services';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+
 
 export default {
   namespace: 'login',
 
   state: {
     status: undefined,
+    currentUser: {
+      name:'静观流叶'
+    }
   },
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+     
+      const {email, password, code, accountId} = payload
+      const response = yield call(appLogin(email, password, code, accountId));
+
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -42,8 +49,20 @@ export default {
     },
 
     *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
-    },
+      
+      try {
+        const data = yield call(loadCode)
+        yield put({
+          type:'saveCaptcha',
+          payload:{
+            captchaUrl:`${appDomain}${data.url}`
+          }
+        })
+      } catch(e){
+
+      }
+      
+     },
 
     *logout(_, { put }) {
       yield put({
@@ -74,5 +93,11 @@ export default {
         type: payload.type,
       };
     },
+    saveCaptcha(state,{payload:{captchaUrl}}) {
+      return {
+        ...state,
+        captchaUrl,
+      };
+    }
   },
 };
