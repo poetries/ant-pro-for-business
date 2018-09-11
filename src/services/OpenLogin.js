@@ -133,6 +133,8 @@ export const doLogin = (appDomain,oAuthDomain,appClientId,state,setStorageItem) 
 						userId : user_id
 					}
 				}
+				
+				setStorageItem('isLogin', JSON.stringify(true))
 				setStorageItem(`userAccount|${user_id}|${account_id}`, JSON.stringify(accountData))
 				return resolve(accountData)
 			}

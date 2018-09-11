@@ -7,7 +7,7 @@ import { formatMessage } from 'umi/locale';
 import Link from 'umi/link';
 import config from '../../config/project'
 
-const auth = JSON.parse(localStorage.getItem('auth'))
+const isLogin = JSON.parse(localStorage.getItem('isLogin'))
 const Authorized = RenderAuthorized(['devboss', 'bosslite']);
 
 export default ({ children, route, location }) => {
@@ -29,11 +29,14 @@ export default ({ children, route, location }) => {
     />
   );
 
-  if (!auth||!auth.data) {
-    if(!config.debug){
-      window.location.href = `/user/login`
+  setTimeout(()=>{
+    if (!isLogin) {
+      if(!config.debug){
+        window.location.href = '/user/login'
+      }
     }
-  }
+  },200)
+  
   return (
     <Authorized
       authority={authorities.length === 0 ? undefined : uniq(authorities)}

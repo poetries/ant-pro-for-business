@@ -90,6 +90,7 @@ export default {
     },
     clearLoginInfo(state,{payload}){
       setAuthority(payload.currentAuthority);
+      
       localStorage.clear()
       return {
         ...state,
