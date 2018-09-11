@@ -28,6 +28,7 @@ export default [
         path: '/dashboard',
         icon: 'dashboard',
         name: 'dashboard',
+        // authority:['bosslite','devboss'],
         component: './Dashboard',
       },
       {

@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { appLogin, loadCode,loadCodeUrl,appDomain } from '@/services';
+import { appLogin, loadCode,loadCodeUrl,oAuthDomain } from '@/services';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
@@ -11,23 +11,22 @@ export default {
 
   state: {
     status: undefined,
-    currentUser: {
-      name:'静观流叶'
-    }
+    accountName:''
   },
 
   effects: {
     *login({ payload }, { call, put }) {
      
-      const {email, password, code, accountId} = payload
-      const response = yield call(appLogin(email, password, code, accountId));
+      const {email, password, captcha} = payload
+      const response = yield call(appLogin,email, password, captcha);
 
+      console.log(response,'res===')
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.data && response.data.accountName) {
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -48,25 +47,22 @@ export default {
       }
     },
 
-    *getCaptcha({ payload }, { call }) {
-      
-      try {
+    *getCaptcha({ payload }, { call,put }) {
+
         const data = yield call(loadCode)
+
         yield put({
           type:'saveCaptcha',
           payload:{
-            captchaUrl:`${appDomain}${data.url}`
+            captchaUrl: `//${oAuthDomain}${data.data.url}`
           }
         })
-      } catch(e){
-
-      }
       
      },
 
     *logout(_, { put }) {
       yield put({
-        type: 'changeLoginStatus',
+        type: 'clearLoginInfo',
         payload: {
           status: false,
           currentAuthority: 'guest',
@@ -85,19 +81,49 @@ export default {
   },
 
   reducers: {
-    changeLoginStatus(state, { payload }) {
+    saveCaptcha(state,{payload}) {
+      
+      return {
+        ...state,
+        captchaUrl:payload.captchaUrl
+      };
+    },
+    clearLoginInfo(state,{payload}){
       setAuthority(payload.currentAuthority);
+      localStorage.clear()
       return {
         ...state,
         status: payload.status,
         type: payload.type,
       };
     },
-    saveCaptcha(state,{payload:{captchaUrl}}) {
+    changeLoginStatus(state, { payload }) {
+      let accountId = 9990001
+      let auth = JSON.parse(localStorage.getItem('auth'))
+      if (!auth||!auth.data)return state
+      let accountKeyStr = 'userAccount|'
+      const {data : {id,token}} = auth
+      if(auth && id){
+        accountKeyStr += id + '|' + accountId
+      }
+      const accountStr = localStorage.getItem(accountKeyStr)
+
+      if (accountStr && accountStr.length) {
+        const account = JSON.parse(accountStr)
+          const {data: {accountName, sign}} = account
+          return {
+            accountId,
+            ...state,
+            accountName,
+            token,
+            sign,
+            userId : id
+          }
+      }
       return {
-        ...state,
-        captchaUrl,
-      };
+        ...state
+      }
+
     }
   },
 };

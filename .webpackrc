@@ -1,7 +1,7 @@
 "proxy": {
-  "/": {
+  "/api": {
     "target": "http://api.ops.yesdat.com/",
     "changeOrigin": true,
-    "pathRewrite": { "^/" : "" }
+    "pathRewrite": { "^/api" : "" }
   }
 }

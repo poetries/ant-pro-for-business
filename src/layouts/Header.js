@@ -145,7 +145,7 @@ class HeaderView extends PureComponent {
 }
 
 export default connect(({ login, global, setting, loading }) => ({
-  currentUser: login.currentUser,
+  login,
   collapsed: global.collapsed,
   // fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,

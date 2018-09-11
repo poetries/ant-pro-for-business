@@ -5,8 +5,10 @@ import { matchRoutes } from 'react-router-config';
 import uniq from 'lodash/uniq';
 import { formatMessage } from 'umi/locale';
 import Link from 'umi/link';
+import config from '../../config/project'
 
-const Authorized = RenderAuthorized(['admin', 'user']);
+const auth = JSON.parse(localStorage.getItem('auth'))
+const Authorized = RenderAuthorized(['devboss', 'bosslite']);
 
 export default ({ children, route, location }) => {
   const routes = matchRoutes(route.routes, location.pathname);
@@ -26,6 +28,12 @@ export default ({ children, route, location }) => {
       backText={formatMessage({ id: 'app.exception.back' })}
     />
   );
+
+  if (!auth||!auth.data) {
+    if(!config.debug){
+      window.location.href = `/user/login`
+    }
+  }
   return (
     <Authorized
       authority={authorities.length === 0 ? undefined : uniq(authorities)}

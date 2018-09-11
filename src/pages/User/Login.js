@@ -62,6 +62,12 @@ class LoginPage extends Component {
   renderMessage = content => (
     <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
   );
+  componentWillMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'login/getCaptcha',
+    })
+  }
 
   render() {
     const { login, submitting,dispatch } = this.props;
@@ -79,7 +85,7 @@ class LoginPage extends Component {
           {login.status === 'error' &&
               login.type === 'account' &&
               !submitting &&
-               this.renderMessage('账户或密码错误（admin/888888）')
+               this.renderMessage('账户或密码错误')
           }
         
           <UserName name="email" placeholder="邮箱" />
@@ -93,7 +99,7 @@ class LoginPage extends Component {
           <Captcha 
             name="captcha" 
             placeholder="验证码" 
-            captchaUrl="http://api.o.yesdat.com/v1/logins/captcha?v=5b9686c45c2e87.14077500"
+            captchaUrl={login.captchaUrl}
             onGetCaptcha={() => dispatch({type:'login/getCaptcha'})}
           />
 

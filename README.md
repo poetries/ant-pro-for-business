@@ -44,6 +44,12 @@ npm install
 npm start
 ```
 
+> 打开`config/project.js`的`debug`置为`true`，不需要授权登录后台，即可访问本地 http://localhost:8000/dashboard
+
+![login](https://upload-images.jianshu.io/upload_images/1480597-fef435e19716033d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![dashboard](https://upload-images.jianshu.io/upload_images/1480597-8caf0adc7df2f33d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 ### 新建页面
 
 **step1 新增 js、less 文件**
