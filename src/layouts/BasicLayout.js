@@ -12,7 +12,7 @@ import { formatMessage } from 'umi/locale';
 import SiderMenu from '@/components/SiderMenu';
 import Authorized from '@/utils/Authorized';
 import SettingDrawer from '@/components/SettingDrawer';
-import logo from '../assets/logo.svg';
+import projectConfig from '../../config/projectConfig';
 import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
@@ -156,13 +156,13 @@ class BasicLayout extends React.PureComponent {
       }
     });
     if (!currRouterData) {
-      return 'poetry';
+      return '赢时通网络';
     }
     const message = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     });
-    return `${message} - poetry`;
+    return `${message} - 赢时通网络`;
   };
 
   getLayoutStyle = () => {
@@ -226,7 +226,7 @@ class BasicLayout extends React.PureComponent {
       <Layout>
         {isTop && !isMobile ? null : (
           <SiderMenu
-            logo={logo}
+            logo={projectConfig.logo}
             Authorized={Authorized}
             theme={navTheme}
             onCollapse={this.handleMenuCollapse}
@@ -244,7 +244,7 @@ class BasicLayout extends React.PureComponent {
           <Header
             menuData={menuData}
             handleMenuCollapse={this.handleMenuCollapse}
-            logo={logo}
+            logo={projectConfig.logo}
             isMobile={isMobile}
             {...this.props}
           />
@@ -264,7 +264,7 @@ class BasicLayout extends React.PureComponent {
             )}
           </ContainerQuery>
         </DocumentTitle>
-      
+
       </React.Fragment>
     );
   }

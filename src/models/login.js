@@ -15,19 +15,15 @@ export default {
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
-     
-      const {email, password, captcha} = payload
-      const response = yield call(appLogin,email, password, captcha);
-
-      console.log(response,'res===')
+    *loginAfter({ payload }, { call, put }) {
+      const {data} = payload
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: data,
       });
       // Login successfully
-      if (response.data && response.data.accountName) {
-        reloadAuthorized();
+      if (data && data.accountName) {
+        reloadAuthorized();//重新授权路由
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
@@ -50,14 +46,13 @@ export default {
     *getCaptcha({ payload }, { call,put }) {
 
         const data = yield call(loadCode)
-
         yield put({
           type:'saveCaptcha',
           payload:{
-            captchaUrl: `//${oAuthDomain}${data.data.url}`
+            captchaUrl: `//${oAuthDomain}${data.data.data.url}`
           }
         })
-      
+
      },
 
     *logout(_, { put }) {
@@ -82,24 +77,19 @@ export default {
 
   reducers: {
     saveCaptcha(state,{payload}) {
-      
+
       return {
         ...state,
         captchaUrl:payload.captchaUrl
       };
     },
     clearLoginInfo(state,{payload}){
-      setAuthority(payload.currentAuthority);
-      
       localStorage.clear()
-      return {
-        ...state,
-        status: payload.status,
-        type: payload.type,
-      };
+      return state
     },
     changeLoginStatus(state, { payload }) {
-      let accountId = 9990001
+
+      let accountId = localStorage.getItem('__account_id__')
       let auth = JSON.parse(localStorage.getItem('auth'))
       if (!auth||!auth.data)return state
       let accountKeyStr = 'userAccount|'
@@ -112,13 +102,17 @@ export default {
       if (accountStr && accountStr.length) {
         const account = JSON.parse(accountStr)
           const {data: {accountName, sign}} = account
-          return {
+          const loginInfo =  {
             accountId,
-            ...state,
             accountName,
             token,
             sign,
             userId : id
+          }
+          localStorage.setItem('__loginInfo__',JSON.stringify(loginInfo))
+          return {
+            ...state,
+            ...loginInfo
           }
       }
       return {

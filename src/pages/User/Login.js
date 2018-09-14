@@ -4,64 +4,56 @@ import Link from 'umi/link';
 import { Checkbox, Alert, Icon ,Input} from 'antd';
 import Login from '@/components/Login';
 import styles from './Login.less';
+import {appLogin} from '@/services'
 
-
+// 组件用法详情
+// https://github.com/ant-design/ant-design-pro/blob/master/src/components/Login/index.zh-CN.md
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
 export default
-@connect(({ login, loading }) => ({
-  login,
-  submitting: loading.effects['login/login'],
+@connect(({ login,loading }) => ({
+  login
 }))
 class LoginPage extends Component {
   state = {
-    type: 'account',
-    autoLogin: true,
-  };
-
-  onTabChange = type => {
-    this.setState({ type });
+    loading:false
   };
 
   onGetCaptcha = () =>
     new Promise((resolve, reject) => {
-      this.loginForm.validateFields(['mobile'], {}, (err, values) => {
+      this.loginForm.validateFields(['captcha'], {}, (err, values) => {
         if (err) {
           reject(err);
         } else {
           const { dispatch } = this.props;
           dispatch({
             type: 'login/getCaptcha',
-            payload: values.mobile,
+            payload: values.captcha,
           })
             .then(resolve)
             .catch(reject);
         }
       });
-    });
+  });
 
   handleSubmit = (err, values) => {
+    this.setState({loading:true})
     if (!err) {
       const { dispatch } = this.props;
-     console.log(values)
-      dispatch({
-        type: 'login/login',
-        payload: {
-          ...values
-        },
-      });
-    }
-  };
 
-  changeAutoLogin = e => {
-    this.setState({
-      autoLogin: e.target.checked,
-    });
+      appLogin(values).then(response=>{
+        dispatch({type:'login/loginAfter',payload:response})
+      }).catch(error=>{
+        dispatch({type:'login/getCaptcha'})
+        this.setState({loading:false})
+      })
+    }
   };
 
   renderMessage = content => (
     <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
   );
+
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -70,40 +62,34 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { login, submitting,dispatch } = this.props;
-    const { type, autoLogin } = this.state;
+    const { login,dispatch } = this.props;
+
     return (
       <div className={styles.main}>
           <Login
-            defaultActiveKey={type}
-            onTabChange={this.onTabChange}
+            // defaultActiveKey={type}
+            // onTabChange={this.onTabChange}
             onSubmit={this.handleSubmit}
             ref={form => {
               this.loginForm = form;
             }}
           >
-          {login.status === 'error' &&
-              login.type === 'account' &&
-              !submitting &&
-               this.renderMessage('账户或密码错误')
-          }
-        
           <UserName name="email" placeholder="邮箱" />
 
           <Password
             name="password"
             placeholder="密码"
+          />
+
+          <Captcha
+            name="captcha"
+            placeholder="验证码"
+            captchaUrl={login.captchaUrl}
+            onGetCaptcha={() => dispatch({type:'login/getCaptcha'})}
             onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
           />
 
-          <Captcha 
-            name="captcha" 
-            placeholder="验证码" 
-            captchaUrl={login.captchaUrl}
-            onGetCaptcha={() => dispatch({type:'login/getCaptcha'})}
-          />
-
-          <Submit loading={submitting}>登录</Submit>
+        <Submit loading={this.state.loading}>登录</Submit>
 
         </Login>
       </div>

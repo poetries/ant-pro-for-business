@@ -1,24 +1,14 @@
 {
-  "name": "admin-for-compancy",
+  "name": "yesdat-admin-template",
   "version": "2.0.0",
-  "description": "An out-of-box UI solution for enterprise applications",
+  "description": "yesdat admin template based on antd pro2.0",
   "private": true,
   "scripts": {
     "precommit": "npm run lint-staged",
-    "presite": "npm run generate-mock && cd functions && npm install",
     "start": "cross-env APP_TYPE=site umi dev",
-    "start:no-mock": "cross-env MOCK=none umi dev",
     "build": "umi build",
-    "site": "npm run presite && cross-env APP_TYPE=site npm run build && firebase deploy",
     "analyze": "cross-env ANALYZE=1 umi build",
-    "lint:style": "stylelint \"src/**/*.less\" --syntax less",
-    "lint": "eslint --ext .js src mock tests && npm run lint:style",
-    "lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",
-    "lint-staged": "lint-staged",
-    "lint-staged:js": "eslint --ext .js",
-    "test": "umi test",
-    "generate-mock": "node ./scripts/generateMock.js",
-    "prettier": "prettier --write ./src/**/**/**/*"
+    "test": "umi test"
   },
   "dependencies": {
     "@antv/data-set": "^0.9.0",
@@ -31,6 +21,7 @@
     "dva": "^2.4.0",
     "enquire-js": "^0.2.1",
     "hash.js": "^1.1.5",
+    "humps": "^2.0.1",
     "jsencrypt": "^3.0.0-rc.1",
     "lodash": "^4.17.10",
     "lodash-decorators": "^6.0.0",

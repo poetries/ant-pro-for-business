@@ -5,10 +5,8 @@ import { matchRoutes } from 'react-router-config';
 import uniq from 'lodash/uniq';
 import { formatMessage } from 'umi/locale';
 import Link from 'umi/link';
-import config from '../../config/project'
 
-const isLogin = JSON.parse(localStorage.getItem('isLogin'))
-const Authorized = RenderAuthorized(['devboss', 'bosslite']);
+const Authorized = RenderAuthorized(['bosslite','devboss']);
 
 export default ({ children, route, location }) => {
   const routes = matchRoutes(route.routes, location.pathname);
@@ -29,14 +27,7 @@ export default ({ children, route, location }) => {
     />
   );
 
-  setTimeout(()=>{
-    if (!isLogin) {
-      if(!config.debug){
-        window.location.href = '/user/login'
-      }
-    }
-  },200)
-  
+
   return (
     <Authorized
       authority={authorities.length === 0 ? undefined : uniq(authorities)}

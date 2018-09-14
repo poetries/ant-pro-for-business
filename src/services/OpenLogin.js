@@ -1,11 +1,7 @@
 import axios from 'axios'
-
-// import crypro from 'crypto-js'
 import md5 from 'md5'
-import { notification } from 'antd';
-import request from '@/utils/request';
+import { notification } from 'antd'
 import {JSEncrypt} from 'jsencrypt'
-// import base64 from 'js-base64'
 const PKEY = `-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGx3BPOc6T4mHV3syeLKL92DjK
 n7W//w4wjXH+F/CP0S8SEuJ/JLYoo79/DgPz7i6odx+OxmWQO2WPK7aDLauJLczn
@@ -18,10 +14,14 @@ export const PStoreKey = '_P_stored_keys_'
 export const loadCodeUrl = (host) => `//${host}/v1/logins/captcha?refresh=1&q=${encodeURIComponent(JSON.stringify({"refresh": 1}))}&user_id=&account_id=&sign=&access_token=`
 
 export const loadCode = (host) => () => {
-  return request(`//${host}/v1/logins/captcha?refresh=1&q=${encodeURIComponent(JSON.stringify({"refresh": 1}))}&user_id=&account_id=&sign=&access_token=`)
+  return axios.get(`//${host}/v1/logins/captcha?refresh=1&q=${encodeURIComponent(JSON.stringify({"refresh": 1}))}&user_id=&account_id=&sign=&access_token=`,
+			{
+				withCredentials: true
+			}
+		)
 }
 
-export const doLogin = (appDomain,oAuthDomain,appClientId,state,setStorageItem) =>(email, password='', captcha) => {
+export const doLogin = (appDomain,oAuthDomain,appClientId,state,setStorageItem) =>({email, password='', captcha}) => {
 	const pt = `${md5(password)},${(new Date()).getTime() / 1000},${Math.random()}`
 	const encrypt = new JSEncrypt()
 	encrypt.setPublicKey(PKEY)
@@ -38,16 +38,7 @@ export const doLogin = (appDomain,oAuthDomain,appClientId,state,setStorageItem) 
 	}
 	let loginObj
 	let access_token
-	// return request(`//${oAuthDomain}/v1/logins`,{
-	// 	method:'POST',
-	// 	body: {
-	// 	  ...data,
-	// 	  user_id:'',
-	// 	  account_id:'',
-	// 	  sign:'',
-	// 	  access_token:''
-	// 	}
-	// })
+
 
 	return new Promise((resolve, reject) => {
 		console.log('ps',data.password)
@@ -59,10 +50,10 @@ export const doLogin = (appDomain,oAuthDomain,appClientId,state,setStorageItem) 
 				notification.error({
 				    message: `请求错误 ${response.data.message}`
 				 });
-				window.g_app._store.dispatch({type:'login/getCaptcha'})
+
 				return reject(response.data)
 			}
-			// const redirect_uri = response.data.data.redirect_uri.replace(appDomain,host) + '&format=json'
+
 			const redirect_uri = response.data.data.redirect_uri + '&format=json'
 			return axios.get(redirect_uri, {
 				maxRedirects: 0,
@@ -118,6 +109,7 @@ export const doLogin = (appDomain,oAuthDomain,appClientId,state,setStorageItem) 
 					token: access_token
 					}
 				}))
+        setStorageItem('__account_id__',account_id)
 				setStorageItem(PStoreKey, JSON.stringify({
 					data : {
 						[`userAccount|${user_id}|${account_id}`] : 1,
@@ -133,7 +125,7 @@ export const doLogin = (appDomain,oAuthDomain,appClientId,state,setStorageItem) 
 						userId : user_id
 					}
 				}
-				
+
 				setStorageItem('isLogin', JSON.stringify(true))
 				setStorageItem(`userAccount|${user_id}|${account_id}`, JSON.stringify(accountData))
 				return resolve(accountData)
@@ -145,4 +137,3 @@ export const doLogin = (appDomain,oAuthDomain,appClientId,state,setStorageItem) 
 
 	})
 }
-

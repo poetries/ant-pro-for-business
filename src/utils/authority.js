@@ -9,7 +9,7 @@ export function getAuthority() {
       authority = [authority];
     }
   } else {
-    authority = ['admin'];
+    authority = ['devboss'];
   }
   return authority;
 }

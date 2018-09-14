@@ -26,8 +26,8 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 /* eslint react/no-multi-comp:0 */
 export default
-@connect(({poetry}) => ({
-  poetries:poetry.poetries
+@connect(({loading}) => ({
+  loading
 }))
 class newPage4 extends PureComponent {
   state = {
@@ -36,21 +36,15 @@ class newPage4 extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'ListNewPage/fetchPoetry',
-    });
+
   }
 
   render() {
     const {poetries} = this.props
+
     return (
       <PageHeaderWrapper title="">
-           <List
-              size="large"
-              bordered
-              dataSource={poetries}
-              renderItem={item => (<List.Item>{item.poetry_title}-{item.poetry_body}-{item.author}</List.Item>)}
-        />
+          newPage1
       </PageHeaderWrapper>
     );
   }

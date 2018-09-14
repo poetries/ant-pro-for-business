@@ -5,13 +5,7 @@ export default {
   'menu.dashboard': 'Dashboard',
 
   'menu.list': '二级菜单',
-  'menu.list.new4': '新页面4',
-
-  // 新页面配置
-  'menu.new1': '新页面1',
-  'menu.new2': '新页面2',
-  'menu.new3': '新页面3',
-  'menu.new4': '新页面4',
+  'menu.list.new1': '新页面1',
 
   'menu.account': '个人页',
   'menu.account.center': '个人中心',
@@ -22,4 +16,10 @@ export default {
   'app.exception.description.403': '抱歉，你无权访问该页面',
   'app.exception.description.404': '抱歉，你访问的页面不存在',
   'app.exception.description.500': '抱歉，服务器出错了',
+
+  'menu.exception': '异常页',
+  'menu.exception.not-permission': '403',
+  'menu.exception.not-find': '404',
+  'menu.exception.server-error': '500',
+  'menu.exception.trigger': '触发错误',
 };
